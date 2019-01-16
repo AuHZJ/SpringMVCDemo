@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+        http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	<!-- 配置SpringMVC注解扫描 -->
+	<mvc:annotation-driven/>
+	<!-- 配置SpringIOC容器的扫描 -->
+	<context:component-scan base-package="com.briup.web.annotation"></context:component-scan>
+	
+	
+	<!-- <bean name="formatService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="com.briup.web.converter.String2DateConverter"></bean>
+			</set>
+		</property>
+	</bean>
+	
+	<mvc:annotation-driven conversion-service="formatService"/>
+	 -->
+	<!-- 配置视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>  
+		<property name="prefix" value="/WEB-INF/jsp/"/>  
+		<property name="suffix" value=".jsp"/>  
+	</bean>  
+	
+	<!-- 静态资源访问问题 -->
+	<!-- 方式二: 使用<mvc:resources>标签 -->
+	<mvc:resources mapping="/images/**" location="/images/"/>  
+	<mvc:resources mapping="/js/**" location="/js/"/>  
+	<mvc:resources mapping="/css/**" location="/css/"/> 
+	
+	<!-- 配置默认视图映射 -->
+	<mvc:view-controller path="/register" view-name="register"></mvc:view-controller>
+	<mvc:view-controller path="/index" view-name="index"></mvc:view-controller>
+	<mvc:view-controller path="/ajax" view-name="ajax"></mvc:view-controller>
+	<mvc:view-controller path="/valid" view-name="valid"></mvc:view-controller>
+	
+	<bean name="util" class="com.briup.test.UtilsTest"></bean>
+<!-- 	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> 
+	    定义默认的异常处理页面，当该异常类型的注册时使用  
+		value="error" 表示跳转的逻辑视图名字 
+	    <property name="defaultErrorView" value="error"></property>  
+
+	    定义异常处理页面用来获取异常信息的变量名，默认名为exception  
+	    <property name="exceptionAttribute" value="ex"></property>  
+
+	    定义需要特殊处理的异常，用简单类名或全限定名作为key，异常页名的逻辑视图名作为value  
+	    <property name="exceptionMappings">  
+	        <props>  
+	            <prop key="IOException">error_io</prop>  
+	            <prop key="java.sql.SQLException">error_sql</prop>  
+	        </props>  
+	    </property>
+	</bean> -->
+
+	<bean name="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+	    <property name="defaultEncoding" value="UTF-8"/> 
+	    <!-- 指定所上传文件的总大小不能超过指定字节大小 -->
+	    <!-- 1MB == 1024*1024B --> 
+	    <property name="maxUploadSize" value="20000000"/>
+	</bean>
+</beans>
